@@ -1,5 +1,31 @@
 require "gosu"
 require_relative "z_order"
+STDOUT.sync = true
+
+file_name = ARGV
+x_cords = []
+y_cords = []
+x_acel = []
+y_acel = []
+
+
+File.open("#{file_name}").each do |line|
+  info = line.split(" ")
+  if line == 0
+
+
+  end
+
+  if line == 1
+
+
+
+  end
+  x = info[0]
+
+
+
+end
 
 class NbodySimulation < Gosu::Window
 
