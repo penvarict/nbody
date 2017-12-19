@@ -14,36 +14,35 @@ class NbodySimulation < Gosu::Window
     simulation = open(file)
 
     rows = simulation.read
-    
-    rows = rows.split(/\n/) #split index spots to rows
+    #rows are each line of the program
+    rows = rows.split(/\n/) #split index spots to rows by splitting indexes into each new line
     @bodies = []
-    loops = rows[0].to_i + 1
-    universe_radius = rows[1].to_f / size
+    loops = rows[0].to_i + 1 #number of bodies is set at the first line (index 0 as in rows)
+    universe_radius = rows[1].to_f / size #radius of the univers is set as the second
     
  
-    for i in 2..loops #number of bodies (loop through enough  times)
+    for i in 2..loops #number of bodies (loop through enough  times) syntax for a for loop is #starting nunber ... max numbers 2 dots means first is NOT included 
       column = rows[i]
-      column = column.split
+      column = column.split(" ") #split each line into columns by the spaces
       
       
       @bodies.push(Body.new(column[0].to_f, column[1].to_f, column[2].to_f, column[3].to_f, column[4].to_f, column[5], universe_radius))
     
-      #print "#{column[0]}\n"
-      
-      #print "#{column[4]}\n"
       #x_pos, y_pos, vel_x, vel_y, mass, image, universe_radius
+      # for loop will create a new body with each step, since each column is defined at row i, it then pushes each column for every time it loops through
       
       
     end#end for
 
   end #end initialize
 
-  def update #calculate forces for movement, functions for calculations are in planet
-    bodies.each do |body|
-      bodies.each do |diff_body|
+  def update #calculate forces for movement
+    bodies.each do |body| #go through bodies
+      bodies.each do |diff_body| #stop at each index and check the body the first loop is at with every other one
         if body != diff_body
 
-          body.calc_force(diff_body)
+          body.calc_force(diff_body) #since forces affect every other body then it needs to be checked everytime unlike accel or velocity
+                                    #since those do not have any affect on the other bodies, so only force needs to be checked.
 
         end
         
@@ -62,7 +61,7 @@ class NbodySimulation < Gosu::Window
     background_image.draw(0, 0, ZOrder::Background)
 
     @bodies.each do |body|
-      body.draw(720) #draw function in planet class
+      body.draw(720) #draw function in planet class, 720 is the window size 
     end
 
   end
@@ -77,6 +76,15 @@ class NbodySimulation < Gosu::Window
 end
 
 file = "simulations/planets.txt"
+
+if ARGV.length == 0
+  file = "simulations/planets.txt"
+else
+  sim = ARGV[0].to_s 
+  puts sim
+  file = "simulations/" + sim
+  puts file
+end
 
 window = NbodySimulation.new(file, 720, false)
 
