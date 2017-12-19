@@ -23,7 +23,7 @@ class NbodySimulation < Gosu::Window
  
     for i in 2..loops #number of bodies (loop through enough  times) syntax for a for loop is #starting nunber ... max numbers 2 dots means first is NOT included 
       column = rows[i]
-      column = column.split(" ") #split each line into columns by the spaces
+      column = column.split(" ") #split each row into columns by the spaces
       
       
       @bodies.push(Body.new(column[0].to_f, column[1].to_f, column[2].to_f, column[3].to_f, column[4].to_f, column[5], universe_radius))

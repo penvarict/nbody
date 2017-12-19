@@ -27,7 +27,9 @@ class Body
 
 
     def draw(size)
-    
+
+        @y_cords_relative = -1*(@y_cords/@diameter)+ 720
+        @x_cords_relative = (@x_cords/@diameter) + 720
         center_x = @x_cords_relative.to_f - @image.width/2.0 - (size/2)
         center_y = @y_cords_relative.to_f - @image.width/2.0 - (size/2)
     
@@ -47,10 +49,7 @@ class Body
         d = Math.sqrt (d_x**2 + d_y**2)
         
         force_excerted = ((G* @mass * other_body.mass)/d**2).to_f
-        #print force_excerted
-        # print "#{d}\n"
-        # print "#{force_excerted}\n"
-        # print "#{x_force}\n"
+
 
         @x_force = @x_force.to_f - ((force_excerted * (@x_cords - other_body.x_cords))/d).to_f
 
@@ -60,8 +59,7 @@ class Body
     
     def calc_acceleration()
         #f=ma a=f/m
-        # print @mass
-        # print @x_force
+
 
          @x_accel= @x_force.to_f / @mass.to_f
          @y_accel= @y_force.to_f / @mass.to_f
@@ -78,20 +76,14 @@ class Body
     def calc_velocity()
         
         @x_vel = @x_vel.to_f + 25000 * @x_accel.to_f 
-        @y_vel =@y_vel.to_f + 25000 * @y_accel.to_f 
+        @y_vel = @y_vel.to_f + 25000 * @y_accel.to_f 
 
 
     end
 
     def calc_position()
-
         @x_cords = @x_cords.to_f + (@x_vel * 25000)
-        @x_cords_relative = (@x_cords/@diameter) + 720
-        
         @y_cords = @y_cords.to_f + (@y_vel * 25000)
-        @y_cords_relative = -1*(@y_cords/@diameter)+ 720
-
-       
     end
 
 
