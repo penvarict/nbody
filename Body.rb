@@ -10,7 +10,7 @@ class Body
     attr_accessor :file, :x_cords, :y_cords, :mass
     
 
-    def initialize(x_cords, y_cords, x_vel, y_vel, mass, file, radius_of_universe)
+    def initialize(x_cords, y_cords, x_vel, y_vel, mass, file, z_velocity, radii_of_body radius_of_universe)
     @x_cords = x_cords.to_f
     @y_cords = y_cords.to_f
     @x_vel = x_vel.to_f
@@ -21,7 +21,7 @@ class Body
     @image = Gosu::Image.new(@image_file)
     @diameter = radius_of_universe * 2
     
-    @x_accel = @y_accel = @x_force = @y_force = @x_cords_relative = @y_cords_relative
+    @x_accel = @y_accel = @x_force = @y_force = @x_cords_relative = @y_cords_relative= @z_velocity=@z_position=@radii_of_body
 
     end
 
@@ -30,9 +30,10 @@ class Body
 
         @y_cords_relative = -1*(@y_cords/@diameter)+ 720
         @x_cords_relative = (@x_cords/@diameter) + 720
+        @z_position = @image.size * @z_velocity
         center_x = @x_cords_relative.to_f - @image.width/2.0 - (size/2)
         center_y = @y_cords_relative.to_f - @image.width/2.0 - (size/2)
-    
+        
 
 
         @image.draw((center_x), (center_y), ZOrder::Foreground)
@@ -72,19 +73,59 @@ class Body
         print "my x accel is #{@x_accel}\n"
         print "my y accel is #{@y_accel}\n"
     end
+
+    def delete_body(body)
+        body.delete
+
+
+    end
+
     
     def calc_velocity()
         
         @x_vel = @x_vel.to_f + 25000 * @x_accel.to_f 
         @y_vel = @y_vel.to_f + 25000 * @y_accel.to_f 
+        
 
+    end
+
+    def calc_velocity_split()
+
+
+        @x_vel = @x_vel.to_f + 25000 * @x_accel.to_f /2
+        @y_vel = @y_vel.to_f + 25000 * @y_accel.to_f /2
 
     end
 
     def calc_position()
         @x_cords = @x_cords.to_f + (@x_vel * 25000)
         @y_cords = @y_cords.to_f + (@y_vel * 25000)
+
     end
+
+    def calc_z_position()
+
+        d_x = @x_cords - center_of_universe
+        d_y= @y_cords - center_of_universe
+        d = Math.sqrt (d_x**2 + d_y**2)
+        
+        if d > d.previous_coordinate
+            @z_velocity = @z_velocity * 5
+        end
+
+        if d < d.previous_coordinate
+            @z_velocity = @z_velocity * .2
+
+        else 
+            @z_velocity = 1
+        end
+
+    
+
+
+    end
+
+        
 
 
 

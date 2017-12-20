@@ -26,9 +26,9 @@ class NbodySimulation < Gosu::Window
       column = column.split(" ") #split each row into columns by the spaces
       
       
-      @bodies.push(Body.new(column[0].to_f, column[1].to_f, column[2].to_f, column[3].to_f, column[4].to_f, column[5], universe_radius))
+      @bodies.push(Body.new(column[0].to_f, column[1].to_f, column[2].to_f, column[3].to_f, column[4].to_f, column[5],column[6].to_f,column[7].to_f universe_radius))
     
-      #x_pos, y_pos, vel_x, vel_y, mass, image, universe_radius
+      #x_pos, y_pos, vel_x, vel_y, mass, image, z_ velocity, radii_of_body, universe_radius
       # for loop will create a new body with each step, since each column is defined at row i, it then pushes each column for every time it loops through
       
       
@@ -51,8 +51,27 @@ class NbodySimulation < Gosu::Window
       body.calc_acceleration()
       body.calc_velocity
       body.calc_position()
+      body.calc_z_velocity()
+    
+      
 
     end
+
+    bodies.each do |body| # go through and check all to see if planets are colliding
+      bodies.each do |diff_body| 
+        if body_radii_cords = diff_body_radii
+
+          delete_body(diff_body)
+          Body.new(diff_body.all_properties,diff_body.body_radii.half,calc_velocity_split())
+          Body.new(diff_body.all_properties,diff_body.body_radii.half,calc_velocity_split())
+          calc_velocity_split()
+        end
+        
+    
+      
+      end
+    end
+    
 
   end
 
